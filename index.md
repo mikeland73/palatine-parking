@@ -10,4 +10,4 @@ accounts, and makes no network requests of any kind.
 
 - [Privacy Policy](privacy.html)
 
-Questions: [mikeland86@gmail.com](mailto:mikeland86@gmail.com)
+Questions: [contact@canarialabs.com](mailto:contact@canarialabs.com)

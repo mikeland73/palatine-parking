@@ -2,7 +2,7 @@
 title: Privacy Policy
 ---
 
-_Last updated: August 3, 2026_
+_Last updated: November 4, 2026_
 
 This app is a Bluetooth client for the parking lift/garage controllers at the
 Palatine building. It is designed to work entirely on your device.
@@ -52,4 +52,4 @@ with a new "last updated" date.
 
 ## Contact
 
-Questions: mikeland86@gmail.com
+Questions: contact@canarialabs.com
