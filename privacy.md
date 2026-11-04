@@ -2,7 +2,7 @@
 title: Privacy Policy
 ---
 
-_Last updated: August 3, 2026_
+_Last updated: November 4, 2026_
 
 This app is a Bluetooth client for the parking lift/garage controllers at the
 Palatine building. It is designed to work entirely on your device.
@@ -18,7 +18,8 @@ controller in front of you.
 
 - **Parking spot credentials.** When you scan (or paste) the QR code for your
   parking spot, the app decrypts it on-device and stores the resulting
-  credential in the **iOS Keychain** (via `expo-secure-store`). It is never
+  credential in the operating system's secure credential store — the **iOS
+  Keychain** or the **Android Keystore** (via `expo-secure-store`). It is never
   transmitted anywhere except to the parking controller over Bluetooth, and
   only when you press a button to open, request, or close.
 - **Controller names and preferences.** Any names you assign to discovered
@@ -34,8 +35,15 @@ deleting the app.
 
 | Permission | Why |
 |---|---|
-| **Bluetooth** | To find and talk to your parking controller. This is the entire function of the app. |
+| **Bluetooth** (on Android, "Nearby devices") | To find and talk to your parking controller. This is the entire function of the app. |
 | **Camera** | To scan the parking QR code when adding a spot. Frames are processed on-device for QR detection and are never stored or transmitted. |
+
+The app does not ask for location. Android historically required a location
+permission for any Bluetooth scan; this app declares that its scans are never used
+to derive your location, so on Android 12 and later no location permission is
+requested at all. On Android 11 and older the system still requires one to return
+Bluetooth scan results — it is used for nothing else, and no location is read,
+stored, or transmitted.
 
 ## Children
 
