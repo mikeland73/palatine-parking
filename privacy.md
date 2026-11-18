@@ -2,17 +2,35 @@
 title: Privacy Policy
 ---
 
-_Last updated: November 17, 2026_
+_Last updated: November 18, 2026_
 
 This app is a Bluetooth client for the parking lift/garage controllers at the
 Palatine building. It is designed to work entirely on your device.
 
 ## What we collect
 
-**Nothing.** The app has no servers, no accounts, no analytics, and no
-advertising SDKs. It makes no network requests of any kind — all communication
-is Bluetooth Low Energy, directly between your device and the parking
-controller in front of you.
+**Crash reports and anonymous diagnostics — nothing else.** The app has no
+accounts, no analytics, and no advertising SDKs. Talking to the parking
+controller is all Bluetooth Low Energy, directly between your device and the
+controller in front of you. The only network traffic is crash and diagnostic
+reporting to [Sentry](https://sentry.io), which we use to find bugs and make
+opening and closing the gate more reliable:
+
+- **Crash reports.** If the app crashes or hits an unexpected error: the stack
+  trace, app version, device model, and operating-system version.
+- **Gate-operation diagnostics.** For each open / request-space / close: which
+  action it was, whether it succeeded, how many attempts it took, how long each
+  step took, the category of any failure (for example "connection timed out" or
+  "controller reported maintenance mode"), the controller's status codes, the
+  Bluetooth signal strength, and an identifier for the controller (a hash that
+  identifies the building's controller, not you).
+- **Performance data** about app start-up and screen loading.
+
+These reports are tied to a random identifier for this installation of the
+app, not to your name, email, phone number, or any account. They never include
+your parking credentials, the gate PIN you type, the QR code, the names you give
+spots or controllers, your location, or screenshots or recordings of the
+screen. Reports are kept by Sentry for at most 90 days.
 
 ## What stays on your device
 
@@ -21,7 +39,8 @@ controller in front of you.
   credential in the operating system's secure credential store — the **iOS
   Keychain** or the **Android Keystore** (via `expo-secure-store`). It is never
   transmitted anywhere except to the parking controller over Bluetooth, and
-  only when you press a button to open, request, or close.
+  only when you press a button to open, request, or close. It is never included
+  in crash or diagnostic reports.
 - **Controller names and preferences.** Any names you assign to discovered
   controllers, and which ones you have disabled, are stored locally.
 - **Debug log.** The in-app debug console keeps a record of the bytes exchanged
@@ -47,11 +66,14 @@ stored, or transmitted.
 
 ## Children
 
-The app is not directed at children and collects no data from anyone.
+The app is not directed at children and collects no personal data from anyone.
 
 ## Third parties
 
-There are none. No data is shared with, or sold to, anyone.
+Crash reports and diagnostics are processed by **Sentry** (Functional Software,
+Inc.) on our behalf, only to operate and improve this app; see
+<https://sentry.io/privacy/>. Nothing is shared with, or sold to, anyone else,
+and nothing is used for advertising or tracking.
 
 ## Changes
 
