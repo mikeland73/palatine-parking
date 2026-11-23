@@ -1,0 +1,90 @@
+<!doctype html>
+<!--
+  Landing page for shared-spot links (src/share.js):
+    https://mikeland73.github.io/palatine-parking/add#s=<qr>&n=<label>
+  Deployed to the mikeland73/palatine-parking GitHub Pages repo as add.html.
+  The spot credential is in the URL fragment, which never reaches the server;
+  this page only hands it to the installed app (palatine://add?...) and never
+  sends it anywhere else. No analytics, no external scripts.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <title>Add parking spot · Palatine Smart Parking</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: #0e1116; color: #e6edf3; font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    main { width: 100%; max-width: 420px; padding: 28px 20px; box-sizing: border-box; text-align: center; }
+    .logo { font-size: 48px; }
+    h1 { font-size: 22px; margin: 8px 0 4px; }
+    .spot { margin: 18px 0; padding: 14px; border: 1px solid #2a3140; border-radius: 12px; background: #161b22; }
+    .spot b { display: block; font-size: 17px; }
+    .spot span { color: #8b949e; font-size: 14px; }
+    p { color: #8b949e; font-size: 14px; }
+    a.btn { display: block; margin: 10px 0; padding: 14px; border-radius: 10px; text-decoration: none;
+      color: #fff; font-weight: 600; background: #1c2230; border: 1px solid #2a3140; }
+    a.btn.primary { background: #2f81f7; border-color: #2f81f7; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+<main>
+  <div class="logo">🅿️</div>
+  <h1 id="title">Add a parking spot</h1>
+  <div class="spot hidden" id="spot"><b id="spot-name"></b><span>Shared with you in Palatine Smart Parking</span></div>
+
+  <div id="phone">
+    <a class="btn primary" id="open" href="#">Open in the app</a>
+    <p>Don't have the app yet? Install it, then come back and tap this link again.</p>
+    <a class="btn" id="ios" href="https://apps.apple.com/app/id6797744954">Download on the App Store</a>
+    <a class="btn" id="android" href="https://play.google.com/store/apps/details?id=com.palatineopen.smartparking">Get it on Google Play</a>
+  </div>
+  <p class="hidden" id="desktop">Open this link on the phone you park with.</p>
+  <p class="hidden" id="invalid">This link is incomplete. Ask the sender to share the spot again.</p>
+</main>
+<script>
+(function () {
+  var hash = location.hash.replace(/^#/, '');
+  var params = {};
+  hash.split('&').forEach(function (p) {
+    var i = p.indexOf('=');
+    if (i > 0) { try { params[p.slice(0, i)] = decodeURIComponent(p.slice(i + 1)); } catch (e) {} }
+  });
+  var $ = function (id) { return document.getElementById(id); };
+  var ua = navigator.userAgent || '';
+  var isAndroid = /Android/i.test(ua);
+  var isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+
+  if (isIOS) $('android').classList.add('hidden');
+  if (isAndroid) $('ios').classList.add('hidden');
+
+  if (!/^[A-Za-z0-9_-]{16,}$/.test(params.s || '')) {
+    $('phone').classList.add('hidden');
+    $('invalid').classList.remove('hidden');
+    return;
+  }
+  if (params.n) { $('spot-name').textContent = params.n; $('spot').classList.remove('hidden'); }
+
+  var appUrl = 'palatine://add?' + hash;
+  var playUrl = $('android').href;
+  // Android: an intent URL opens the app if installed, otherwise Google Play.
+  var openUrl = isAndroid
+    ? 'intent://add?' + hash + '#Intent;scheme=palatine;package=com.palatineopen.smartparking;S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end'
+    : appUrl;
+  $('open').href = openUrl;
+
+  if (!isIOS && !isAndroid) {
+    $('phone').classList.add('hidden');
+    $('desktop').classList.remove('hidden');
+    return;
+  }
+  // Try the app straight away; if it isn't installed the page stays, showing the store link.
+  setTimeout(function () { location.href = openUrl; }, 50);
+})();
+</script>
+</body>
+</html>
